@@ -1,0 +1,4 @@
+name = "Kaftor"
+uuid = "b67cd48b-c284-4acd-b315-b9f141324b39"
+version = "0.1.0"
+authors = ["Pierre Abbat <phma@bezitopo.org>"]
