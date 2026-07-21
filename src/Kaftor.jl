@@ -42,7 +42,7 @@ function unrot4p(n::UInt16,key::UInt8)
   UInt16(p7|p9)
 end
 
-const revInxBitTable16=UInt16[]
+const revInxBitTable16=OffsetVector(UInt16[],-1)
 
 function fillRevInx16()
   ri=OffsetVector([0,8,4,12,2,10,6,14,1,9,5,13,3,11,7,15],-1)
