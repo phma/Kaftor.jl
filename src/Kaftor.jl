@@ -57,4 +57,35 @@ function fillRevInx16()
   end
 end
 
+function revInxBit(n::UInt16)
+  if length(revInxBitTable16)!=65536
+    empty!(revInxBitTable16)
+    fillRevInx16()
+  end
+  revInxBitTable16[n]
+end
+
+"""
+    rot4p(a::UInt8,b::UInt8,key::UInt8)
+
+Interleaves `a` and `b` giving `n`, rotates `n` in four parts exclusive-oring
+with `key` in the middle, uninterleaves the result, and returns two bytes.
+"""
+function rot4p(a::UInt8,b::UInt8,key::UInt8)
+  n=revInxBit(a*0x100+b)
+  m=revInxBit(rot4p(n,key))
+  UInt8((m>>8)&0xff),UInt8(m&0xff)
+end
+
+"""
+    unrot4p(a::UInt8,b::UInt8,key::UInt8)
+
+Undoes `rot4p(a,b,key)`.
+"""
+function unrot4p(a::UInt8,b::UInt8,key::UInt8)
+  n=revInxBit(a*0x100+b)
+  m=revInxBit(unrot4p(n,key))
+  UInt8((m>>8)&0xff),UInt8(m&0xff)
+end
+
 end # module Kaftor
