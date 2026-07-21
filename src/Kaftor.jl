@@ -1,4 +1,5 @@
 module Kaftor
+using OffsetArrays
 export rot4p,unrot4p
 
 """
@@ -39,6 +40,21 @@ function unrot4p(n::UInt16,key::UInt8)
   p9=(((n&0x1ff)*0x00201)>>b9)&0x1ff
   p7=(((((n&0xfe00)>>9)*0x00081)>>b7)&0x7f)<<9
   UInt16(p7|p9)
+end
+
+const revInxBitTable16=UInt16[]
+
+function fillRevInx16()
+  ri=OffsetVector([0,8,4,12,2,10,6,14,1,9,5,13,3,11,7,15],-1)
+  for n in 0:65535
+    m=0
+    for i in 0:15
+      if n&(1<<i)>0
+	m+=1<<ri[i]
+      end
+    end
+    push!(revInxBitTable16,m)
+  end
 end
 
 end # module Kaftor
