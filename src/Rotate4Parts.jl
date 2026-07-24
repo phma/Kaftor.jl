@@ -1,6 +1,6 @@
 module Rotate4Parts
 using OffsetArrays
-export rot4p,unrot4p
+export rot4p,unrot4p,numPairs
 
 """
     rot4p(n::UInt16,key::UInt8)
@@ -86,6 +86,21 @@ function unrot4p(a::UInt8,b::UInt8,key::UInt8)
   n=revInxBit(a*0x100+b)
   m=revInxBit(unrot4p(n,key))
   UInt8((m>>8)&0xff),UInt8(m&0xff)
+end
+
+"""
+    numPairs(n::Integer,round::Integer)
+
+Compute how many pairs of numbers in 0:`n`-1 differ by 2^`round`. This is
+how many bytes of key schedule are used in round `round`.
+"""
+function numPairs(n::Integer,round::Integer)
+  pow=1<<round
+  ret=(n÷2)&(-pow)
+  if n&pow!=0
+    ret+=n&(pow-1)
+  end
+  ret
 end
 
 end
