@@ -8,8 +8,10 @@ export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!
 const yieldInterval=8191
 
 function mix3(a::Integer,b::Integer,c::Integer)
-  mask=(a|b|c)-(a&b&c)
-  (a⊻mask,b⊻mask,c⊻mask)
+  apar=isodd(count_ones(a)) ? ~zero(a) : zero(a)
+  bpar=isodd(count_ones(b)) ? ~zero(b) : zero(b)
+  cpar=isodd(count_ones(c)) ? ~zero(c) : zero(c)
+  (a⊻bpar⊻cpar,b⊻cpar⊻apar,c⊻apar⊻bpar)
 end
 
 function fiboPair(n::Integer)
