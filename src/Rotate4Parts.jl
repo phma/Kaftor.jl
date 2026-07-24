@@ -1,6 +1,6 @@
 module Rotate4Parts
 using OffsetArrays
-export rot4p,unrot4p,numPairs
+export rot4p,unrot4p,numsPairs
 
 """
     rot4p(n::UInt16,key::UInt8)
@@ -99,6 +99,26 @@ function numPairs(n::Integer,round::Integer)
   ret=(n÷2)&(-pow)
   if n&pow!=0
     ret+=n&(pow-1)
+  end
+  ret
+end
+
+"""
+    numsPairs(n::Integer)
+
+List the number of bytes of key schedule that are used in each round.
+The sum of the returned `Vector` is A000788.
+"""
+function numsPairs(n::Integer)
+  ret=typeof(n)[]
+  i=0
+  while true
+    np=numPairs(n,i)
+    if np==0
+      break
+    end
+    push!(ret,np)
+    i+=1
   end
   ret
 end
