@@ -1,5 +1,5 @@
 module Kaftor
-include("Rotate4Parts.jl")
+include("ShufflePairs.jl")
 include("Mix3.jl")
 include("Jumble.jl")
 include("KeySchedule.jl")
