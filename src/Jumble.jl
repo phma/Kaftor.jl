@@ -19,6 +19,19 @@ function jumbleWorker!(data::Vector{<:Integer},p,q,r,n,t,imod,jmod,thue)
   end
 end
 
+function jumble!(data::Vector{<:Integer},p::Integer,q::Integer,r::Integer)
+  thue=0x9669699669969669&(typemax(eltype(data))⊻typemin(eltype(data)))
+  t=nthreads()
+  tasks=Task[]
+  for n in 1:t
+    push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
+  end
+  for i in 1:t
+    wait(tasks[i])
+  end
+  return nothing
+end
+
 """
   jumble!(data::Vector{<:Integer})
 
@@ -30,16 +43,7 @@ function jumble!(data::Vector{<:Integer})
   p=nextprime(len+3) # skip -1, 0, and 1
   r=Mod{p}(findMaxOrder(p))
   q=inv(Mod{p}(r))
-  thue=0x9669699669969669&(typemax(eltype(data))⊻typemin(eltype(data)))
-  t=nthreads()
-  tasks=Task[]
-  for n in 1:t
-    push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
-  end
-  for i in 1:t
-    wait(tasks[i])
-  end
-  return nothing
+  jumble!(data,p,q,r)
 end
 
 end
