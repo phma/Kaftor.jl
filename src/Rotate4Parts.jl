@@ -1,6 +1,6 @@
 module Rotate4Parts
 using OffsetArrays
-export rot4p,unrot4p,numsPairs
+export rot4p,unrot4p,numsPairs,shufflePairs,unshufflePairs
 
 """
     rot4p(n::UInt16,key::UInt8)
@@ -121,6 +121,22 @@ function numsPairs(n::Integer)
     i+=1
   end
   ret
+end
+
+function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+  # buf would be easier if it started at 0, but jumble! would be easier if it
+  # started at 2, so it's starting at 1 as is usual in Julia.
+  for i in eachindex(key)
+    j=i+((i-1)&-(1<<round))
+    buf[j],buf[j+1]=rot4p(buf[j],buf[j+1],key[i])
+  end
+end
+
+function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+  for i in eachindex(key)
+    j=i+((i-1)&-(1<<round))
+    buf[j],buf[j+1]=unrot4p(buf[j],buf[j+1],key[i])
+  end
 end
 
 end
