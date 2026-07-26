@@ -1,4 +1,4 @@
-module Rotate4Parts
+module ShufflePairs
 using OffsetArrays
 export rot4p,unrot4p,numsPairs,shufflePairs,unshufflePairs
 
