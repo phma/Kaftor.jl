@@ -1,6 +1,6 @@
 module ShufflePairs
 using OffsetArrays
-export rot4p,unrot4p,numsPairs,shufflePairs,unshufflePairs
+export rot4p,unrot4p,numsPairs,shufflePairs!,unshufflePairs!
 
 """
     rot4p(n::UInt16,key::UInt8)

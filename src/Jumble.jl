@@ -19,7 +19,7 @@ function jumbleWorker!(data::Vector{<:Integer},p,q,r,n,t,imod,jmod,thue)
   end
 end
 
-function jumble!(data::Vector{<:Integer},p::Integer,q::Integer,r::Integer)
+function jumble!(data::Vector{<:Integer},p::Integer,q::Mod,r::Mod)
   thue=0x9669699669969669&(typemax(eltype(data))⊻typemin(eltype(data)))
   t=nthreads()
   tasks=Task[]
