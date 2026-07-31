@@ -1,4 +1,5 @@
 using Kaftor,Test
+using Kaftor.Jumble
 
 function testRot4p(n::Int)
   a=UInt8(n>>16&255)
@@ -12,3 +13,12 @@ end
 for i in 0:465:1048575
   @test testRot4p(i)
 end
+
+function testJumble(buf::Vector{UInt8})
+  orig=copy(buf)
+  jumble!(buf)
+  jumble!(buf)
+  orig==buf
+end
+
+@test testJumble(collect(0x00:0xa2))
