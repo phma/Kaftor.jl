@@ -126,16 +126,18 @@ end
 function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
   # buf would be easier if it started at 0, but jumble! would be easier if it
   # started at 2, so it's starting at 1 as is usual in Julia.
+  h=1<<round
   for i in eachindex(key)
-    j=i+((i-1)&-(1<<round))
-    buf[j],buf[j+1]=rot4p(buf[j],buf[j+1],key[i])
+    j=i+((i-1)&-h)
+    buf[j],buf[j+h]=rot4p(buf[j],buf[j+h],key[i])
   end
 end
 
 function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+  h=1<<round
   for i in eachindex(key)
-    j=i+((i-1)&-(1<<round))
-    buf[j],buf[j+1]=unrot4p(buf[j],buf[j+1],key[i])
+    j=i+((i-1)&-h)
+    buf[j],buf[j+h]=unrot4p(buf[j],buf[j+h],key[i])
   end
 end
 
