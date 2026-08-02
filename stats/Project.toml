@@ -1,0 +1,4 @@
+name="stats"
+
+[deps]
+Kaftor = "b67cd48b-c284-4acd-b315-b9f141324b39"
