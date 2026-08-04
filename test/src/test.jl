@@ -1,7 +1,13 @@
 module test
 using Kaftor,Test
 using Kaftor.Jumble,Kaftor.Mix3
-export testRot4p,testJumble,testMix3
+export testRot4p,testJumble,testMix3,testMaxOrder
+
+function testMaxOrder()
+  @test Kaftor.findMaxOrder(85)==54
+  @test Kaftor.findMaxOrder(1618034)==1000001
+  @test Kaftor.findMaxOrder(1)==1
+end
 
 function testRot4p(n::Int)
   a=UInt8(n>>16&255)
