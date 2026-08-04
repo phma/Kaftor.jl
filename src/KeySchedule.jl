@@ -38,4 +38,8 @@ function keySchedule(vec::Vector{UInt8},len::Integer)
   ret
 end
 
+function keySchedule(vec::String,len::Integer)
+  keySchedule(Vector{UInt8}(vec),len)
+end
+
 end
