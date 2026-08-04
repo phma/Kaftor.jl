@@ -23,6 +23,11 @@ function roundDecrypt!(data::Vector{UInt8},round::Integer,key::Vector{UInt8},
   jumble!(data,wholePrime,wholeInverse,wholeRPrime)
 end
 
+"""
+    kaftorEncrypt!(data::Vector{UInt8},key)
+
+Encrypt `data` in place with `key`, which can be a `Vector{UInt8}` or a `String`.
+"""
 function kaftorEncrypt!(data::Vector{UInt8},key)
   scheduleLengths=OffsetVector(numsPairs(length(data)),-1)
   scheduledKey=keySchedule(key,sum(scheduleLengths))
@@ -38,6 +43,11 @@ function kaftorEncrypt!(data::Vector{UInt8},key)
   end
 end
 
+"""
+    kaftorDecrypt!(data::Vector{UInt8},key)
+
+Decrypt `data` in place with `key`, which can be a `Vector{UInt8}` or a `String`.
+"""
 function kaftorDecrypt!(data::Vector{UInt8},key)
   scheduleLengths=OffsetVector(numsPairs(length(data)),-1)
   scheduledKey=keySchedule(key,sum(scheduleLengths))
