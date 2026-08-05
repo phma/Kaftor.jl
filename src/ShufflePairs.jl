@@ -1,5 +1,5 @@
 module ShufflePairs
-using OffsetArrays
+using OffsetArrays,Base.Threads
 export rot4p,unrot4p,numsPairs,shufflePairs!,unshufflePairs!
 
 """
@@ -127,7 +127,7 @@ function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
   # buf would be easier if it started at 0, but jumble! would be easier if it
   # started at 2, so it's starting at 1 as is usual in Julia.
   h=1<<round
-  for i in eachindex(key)
+  @threads for i in eachindex(key)
     j=i+((i-1)&-h)
     buf[j],buf[j+h]=rot4p(buf[j],buf[j+h],key[i])
   end
@@ -135,7 +135,7 @@ end
 
 function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
   h=1<<round
-  for i in eachindex(key)
+  @threads for i in eachindex(key)
     j=i+((i-1)&-h)
     buf[j],buf[j+h]=unrot4p(buf[j],buf[j+h],key[i])
   end
