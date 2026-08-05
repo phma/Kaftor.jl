@@ -57,6 +57,8 @@ function fillRevInx16()
   end
 end
 
+fillRevInx16()
+
 function revInxBit(n::UInt16)
   if length(revInxBitTable16)!=65536
     empty!(revInxBitTable16)
