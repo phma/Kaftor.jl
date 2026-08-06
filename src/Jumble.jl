@@ -5,6 +5,8 @@ using Base.Threads,Primes,Mods
 using .Mix3
 export jumble!
 
+perThread::Int=2^16
+
 function jumbleWorker!(data::Vector{<:Integer},p,q,r,n,t,imod,jmod,thue)
   len=length(data)
   while n<=(p-3)÷2
@@ -21,7 +23,7 @@ end
 
 function jumble!(data::Vector{<:Integer},p::Integer,q::Mod,r::Mod)
   thue=0x9669699669969669&(typemax(eltype(data))⊻typemin(eltype(data)))
-  t=nthreads()
+  t=max(1,min(length(data)÷perThread,nthreads()))
   tasks=Task[]
   for n in 1:t
     push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
