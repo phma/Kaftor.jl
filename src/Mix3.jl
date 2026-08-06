@@ -1,6 +1,6 @@
 module Mix3
 using Primes,Mods,Base.Threads,OffsetArrays
-export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!
+export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!,yieldInterval
 
 # This should be a prime greater than all prime factors of numbers of threads
 # on CPUs. For instance, since there are 22-core 88-thread Power9 chips, it

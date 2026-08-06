@@ -18,6 +18,9 @@ function jumbleWorker!(data::Vector{<:Integer},p,q,r,n,t,imod,jmod,thue)
     imod*=r
     jmod*=q
     n+=t
+    if n%yieldInterval==0
+      yield()
+    end
   end
 end
 
