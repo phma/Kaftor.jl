@@ -1,6 +1,7 @@
 module bench
 using Kaftor,BenchmarkTools,ProfileView
-export kaftorTime,kaftorProf
+using Kaftor.Jumble
+export kaftorTime,kaftorProf,jumbleTime
 
 function kaftorTime(textLen::Integer,keyLen::Integer) # in nanoseconds
   text=fill(0x69,textLen)
@@ -13,6 +14,12 @@ function kaftorProf(textLen::Integer,keyLen::Integer)
   text=fill(0x69,textLen)
   key=fill(0x96,keyLen)
   @profview kaftorEncrypt!(text,key)
+end
+
+function jumbleTime(textLen::Integer)
+  text=fill(0x69,textLen)
+  trial=@benchmark jumble!($text)
+  median(trial).time
 end
 
 end
