@@ -13,6 +13,15 @@ Given messages `a`, `b`, `c`, and `d` such that `d==a⊻b⊻c`, and a key `k`, `
 
 The key schedule is affine; it consists of running the key through an LFSR, then exclusive-oring it with the Thue-Morse sequence stretched by the key length, so that a key `aa` is different from a key `a`, where `a` is any string.
 
+# Key and message sizes
+The number of scheduled key bytes used is approximately `length(message)*log2(length(message))/2`, with equality when `length(message)` is a power of 2.
+
+I recommend that messages be at least 16 bytes long and keys 16 to 32 bytes long. A 16-byte message consumes 32 bytes of scheduled key; if the key is longer than 32 bytes, all bytes after the first 32 are ignored.
+
+Unlike Wring and Twistree, an empty key is not allowed and results in a divide-by-zero error.
+
+A five-byte message is particularly badly encrypted, as the fourth byte (starting from 1) is affected by neither `mix3Parts` nor `jumble`.
+
 # Julia
 This is a Julia implementation. I'm planning to add another implementation, probably in Rust, in the same repo, and make both reference implementations.
 
