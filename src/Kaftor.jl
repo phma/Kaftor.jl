@@ -35,7 +35,11 @@ function kaftorEncrypt!(data::Vector{UInt8},key)
   wholePrime=nextprime(length(data)+3)
   wholeRPrime=Mod{wholePrime}(findMaxOrder(wholePrime))
   wholeInverse=inv(wholeRPrime)
-  tierceRPrime=findMaxOrder(length(data)÷3)
+  if length(data)<3
+    tierceRPrime=1
+  else
+    tierceRPrime=findMaxOrder(length(data)÷3)
+  end
   for round in eachindex(scheduleLengths)
     roundEncrypt!(data,round,scheduledKey[start:start+scheduleLengths[round]-1],
 		  wholePrime,wholeRPrime,wholeInverse,tierceRPrime)
