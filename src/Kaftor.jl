@@ -12,13 +12,13 @@ function roundEncrypt!(data::Vector{UInt8},round::Integer,key::Vector{UInt8},
 		       wholeInverse::Mod,tierceRPrime::Integer)
   jumble!(data,wholePrime,wholeInverse,wholeRPrime)
   shufflePairs!(data,round,key)
-  mix3PartsSeq!(data,tierceRPrime)
+  mix3PartsPar!(data,tierceRPrime)
 end
 
 function roundDecrypt!(data::Vector{UInt8},round::Integer,key::Vector{UInt8},
 		       wholePrime::Integer,wholeRPrime::Mod,
 		       wholeInverse::Mod,tierceRPrime::Integer)
-  mix3PartsSeq!(data,tierceRPrime)
+  mix3PartsPar!(data,tierceRPrime)
   unshufflePairs!(data,round,key)
   jumble!(data,wholePrime,wholeInverse,wholeRPrime)
 end

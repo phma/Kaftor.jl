@@ -27,6 +27,10 @@ end
 function jumble!(data::Vector{<:Integer},p::Integer,q::Mod,r::Mod)
   thue=0x9669699669969669&(typemax(eltype(data))⊻typemin(eltype(data)))
   t=max(1,min(length(data)÷perThread,nthreads()))
+  if t==1
+    jumbleWorker!(data,p,q,r,1,t,r,q,thue)
+    return nothing
+  end
   tasks=Task[]
   for n in 1:t
     push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
