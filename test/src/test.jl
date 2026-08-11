@@ -32,6 +32,14 @@ key6_3 = "derate"
 #	 39	 96
 #	 96	304
 
+function mix3PartsSeq!(buf::Vector{<:Integer},rprime::Integer)
+  len=div(length(buf),3)
+  a=1
+  b=2*len
+  c=2*len+1
+  Kaftor.Mix3.mix3Worker!(buf,a,b,c,1,rprime,len)
+end
+
 function testMaxOrder()
   @test Kaftor.findMaxOrder(85)==54
   @test Kaftor.findMaxOrder(1618034)==1000001
@@ -63,7 +71,7 @@ end
 function testMix3(buf::Vector{UInt8})
   orig=copy(buf)
   rprime=findMaxOrder(length(buf)÷3)
-  mix3PartsSeq!(buf,rprime)
+  mix3PartsPar!(buf,rprime)
   mix3PartsSeq!(buf,rprime)
   orig==buf
 end
