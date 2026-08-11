@@ -82,6 +82,15 @@ end
 
 function testMix3()
   @test testMix3(collect(0x00:0xa2))
+  buf=UInt8[]
+  for i in 0x00:0xf2
+    for j in 0x00:0xf2
+      for k in 0x00:0xf2
+        push!(buf,((i+0x01)*(j+0x01))⊻k)
+      end
+    end
+  end
+  @test testMix3(buf)
 end
 
 function testVector(key,plaintext,ciphertext::Vector{UInt8})
