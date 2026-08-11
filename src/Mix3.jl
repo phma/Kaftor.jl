@@ -7,7 +7,7 @@ export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!,yieldInterv
 # should be greater than 11.
 const yieldInterval=8191
 
-perThread::Int=2^16
+perThread::Int=2^21+2^20
 
 function mix3(a::Integer,b::Integer,c::Integer)
   apar=isodd(count_ones(a)) ? ~zero(a) : zero(a)
