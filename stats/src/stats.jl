@@ -10,9 +10,9 @@ function big5Power(n::Integer)
   big(5)^(n*146÷339)
 end
 
-function messageArray(pt::Integer,clutchMsgLen::Integer) # also used for keys
-  ret=Vector{UInt8}(undef,clutchMsgLen)
-  for i in 1:clutchMsgLen
+function messageArray(pt::Integer,msgLen::Integer) # also used for keys
+  ret=Vector{UInt8}(undef,msgLen)
+  for i in 1:msgLen
     ret[i]=UInt8(pt&0xff)
     pt>>=8
   end
