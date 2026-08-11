@@ -124,22 +124,23 @@ function mix3PartsPar!(buf::Vector{<:Integer},rprime::Integer)
   end
   if aInc==1
     mix3Worker!(buf,a,b,c,aInc,cInc,len)
-    return nothing
-  end
-  tasks=Task[]
-  for i in 1:aInc
-    #println("Starting task a=",a," b=",b," c=",c," aInc=",aInc," cInc=",cInc)
-    push!(tasks,@spawn mix3Worker!(buf,$a,$b,$c,aInc,cInc,len))
-    a+=1
-    b-=1
-    c+=rprime
-    if c>3*len
-      c-=len
+  else
+    tasks=Task[]
+    for i in 1:aInc
+      #println("Starting task a=",a," b=",b," c=",c," aInc=",aInc," cInc=",cInc)
+      push!(tasks,@spawn mix3Worker!(buf,$a,$b,$c,aInc,cInc,len))
+      a+=1
+      b-=1
+      c+=rprime
+      if c>3*len
+        c-=len
+      end
+    end
+    for i in 1:aInc
+      wait(tasks[i])
     end
   end
-  for i in 1:aInc
-    wait(tasks[i])
-  end
+  return nothing
 end
 
 end

@@ -29,14 +29,14 @@ function jumble!(data::Vector{<:Integer},p::Integer,q::Mod,r::Mod)
   t=max(1,min(length(data)÷perThread,nthreads()))
   if t==1
     jumbleWorker!(data,p,q,r,1,t,r,q,thue)
-    return nothing
-  end
-  tasks=Task[]
-  for n in 1:t
-    push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
-  end
-  for i in 1:t
-    wait(tasks[i])
+  else
+    tasks=Task[]
+    for n in 1:t
+      push!(tasks,@spawn jumbleWorker!(data,p,q^t,r^t,$n,t,$r^n,$q^n,thue))
+    end
+    for i in 1:t
+      wait(tasks[i])
+    end
   end
   return nothing
 end
