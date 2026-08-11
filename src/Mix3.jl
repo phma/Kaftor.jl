@@ -1,13 +1,13 @@
 module Mix3
 using Primes,Mods,Base.Threads,OffsetArrays
-export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!,yieldInterval,mix3PerThread
+export carmichael,findMaxOrder,relPrimes,mix3PartsSeq!,mix3PartsPar!,yieldInterval
 
 # This should be a prime greater than all prime factors of numbers of threads
 # on CPUs. For instance, since there are 22-core 88-thread Power9 chips, it
 # should be greater than 11.
 const yieldInterval=8191
 
-mix3PerThread::Int=2^16
+perThread::Int=2^16
 
 function mix3(a::Integer,b::Integer,c::Integer)
   apar=isodd(count_ones(a)) ? ~zero(a) : zero(a)
@@ -117,7 +117,7 @@ function mix3PartsPar!(buf::Vector{<:Integer},rprime::Integer)
   a=1
   b=2*len
   c=2*len+1
-  aInc=max(1,min(len÷mix3PerThread,nthreads()))
+  aInc=max(1,min(len÷perThread,nthreads()))
   cInc=(rprime*aInc)
   if len>0
     cInc%=len
