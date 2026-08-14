@@ -1,6 +1,6 @@
 module stats
-using Kaftor
-export big3Power,big5Power,messageArray,messageBignum,tickle
+using Kaftor,CairoMakie
+export big3Power,big5Power,messageArray,messageBignum,tickle,addTickle!
 
 function big3Power(n::Integer)
   big(3)^(n*53÷84)
@@ -39,6 +39,16 @@ function tickle(n::Integer,key::Vector{UInt8})
     push!(ret,ct1⊻ct0)
   end
   ret
+end
+
+function addTickle!(m::Matrix{<:Integer},t::Vector{BigInt})
+  for i in eachindex(t)
+    for j in 1:size(m)[1]
+      if t[i]&(big(1)<<(j-1))>0
+        m[j,i]+=1
+      end
+    end
+  end
 end
 
 end
