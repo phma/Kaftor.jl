@@ -1,7 +1,7 @@
 module stats
-using Kaftor,CairoMakie
+using Kaftor,CairoMakie,Printf
 export big3Power,big5Power,messageArray,messageBignum,tickle,addTickle!
-export heatmapDataTickle
+export heatmapDataTickle,plotHeatmapTickle
 
 function big3Power(n::Integer)
   big(3)^(n*53÷84)
@@ -59,6 +59,15 @@ function heatmapDataTickle(n::Integer)
     addTickle!(data,tickle(n,messageArray(key1*i,n)))
   end
   data
+end
+
+function plotHeatmapTickle(n::Integer)
+  tk=Figure(size=(1189,841))
+  tkhmax=Axis(tk[1,1])
+  data=heatmapDataTickle(n)
+  heatmap!(tkhmax,data)
+  filename=@sprintf "tickle-%d.svg" n
+  save(filename,tk)
 end
 
 end

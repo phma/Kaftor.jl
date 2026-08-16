@@ -3,3 +3,4 @@ name = "stats"
 [deps]
 CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
 Kaftor = "b67cd48b-c284-4acd-b315-b9f141324b39"
+Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
