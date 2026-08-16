@@ -1,6 +1,7 @@
 module stats
 using Kaftor,CairoMakie
 export big3Power,big5Power,messageArray,messageBignum,tickle,addTickle!
+export heatmapDataTickle
 
 function big3Power(n::Integer)
   big(3)^(n*53÷84)
@@ -49,6 +50,15 @@ function addTickle!(m::Matrix{<:Integer},t::Vector{BigInt})
       end
     end
   end
+end
+
+function heatmapDataTickle(n::Integer)
+  data=zeros(Int16,n*8,n*8)
+  key1=big3Power(8*n)
+  for i in 1:8192
+    addTickle!(data,tickle(n,messageArray(key1*i,n)))
+  end
+  data
 end
 
 end
