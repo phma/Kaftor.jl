@@ -125,22 +125,30 @@ function numsPairs(n::Integer)
   ret
 end
 
-function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
-  # buf would be easier if it started at 0, but jumble! would be easier if it
-  # started at 2, so it's starting at 1 as is usual in Julia.
+function shufflePairsWorker!(buf,round,key,f::Integer,l::Integer)
   h=1<<round
-  @threads for i in eachindex(key)
+  for i in f:l
     j=i+((i-1)&-h)
     buf[j],buf[j+h]=rot4p(buf[j],buf[j+h],key[i])
   end
 end
 
-function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+function unshufflePairsWorker!(buf,round,key,f::Integer,l::Integer)
   h=1<<round
-  @threads for i in eachindex(key)
+  for i in f:l
     j=i+((i-1)&-h)
     buf[j],buf[j+h]=unrot4p(buf[j],buf[j+h],key[i])
   end
+end
+
+function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+  # buf would be easier if it started at 0, but jumble! would be easier if it
+  # started at 2, so it's starting at 1 as is usual in Julia.
+  shufflePairsWorker!(buf,round,key,1,length(key))
+end
+
+function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
+  unshufflePairsWorker!(buf,round,key,1,length(key))
 end
 
 end
