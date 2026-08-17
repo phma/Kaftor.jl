@@ -1,6 +1,10 @@
 module ShufflePairs
+include("Mix3.jl")
 using OffsetArrays,Base.Threads
+using .Mix3
 export rot4p,unrot4p,numsPairs,shufflePairs!,unshufflePairs!
+
+perThread::Int=2^21+2^20
 
 """
     rot4p(n::UInt16,key::UInt8)
@@ -139,6 +143,26 @@ function unshufflePairsWorker!(buf,round,key,f::Integer,l::Integer)
     j=i+((i-1)&-h)
     buf[j],buf[j+h]=unrot4p(buf[j],buf[j+h],key[i])
   end
+end
+
+function threadRanges(len::Integer)
+  nthr=max(1,min(len÷perThread,nthreads()))
+  q,r=divrem(len,nthr)
+  acc=1
+  lens=fill(q,nthr)
+  h=findMaxOrder(nthr)
+  for i in 1:r
+    lens[acc]+=1
+    acc+=h
+    if acc>nthr
+      acc-=nthr
+    end
+  end
+  ret=[1]
+  for i in lens
+    push!(ret,ret[end]+i)
+  end
+  ret
 end
 
 function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
