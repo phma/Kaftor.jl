@@ -133,7 +133,7 @@ end
 
 function listSingleIpsi()
   for i in 0x0:0xffffff
-    if singleIpsi(i)
+    if count_ones(i)<=13 && count_ones(i)>=11 && singleIpsi(i)
       @printf "%06x  " i
     end
   end
