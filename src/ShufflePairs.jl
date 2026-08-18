@@ -168,11 +168,35 @@ end
 function shufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
   # buf would be easier if it started at 0, but jumble! would be easier if it
   # started at 2, so it's starting at 1 as is usual in Julia.
-  shufflePairsWorker!(buf,round,key,1,length(key))
+  ranges=threadRanges(length(key))
+  if length(ranges)==2
+    shufflePairsWorker!(buf,round,key,1,length(key))
+  else
+    tasks=Task[]
+    for i in 1:length(ranges)-1
+      push!(tasks,@spawn shufflePairsWorker!(buf,round,key,ranges[i],ranges[i-1]-1))
+    end
+    for i in 1:length(ranges)-1
+      wait(tasks[i])
+    end
+  end
+  return nothing
 end
 
 function unshufflePairs!(buf::Vector{UInt8},round::Integer,key::Vector{UInt8})
-  unshufflePairsWorker!(buf,round,key,1,length(key))
+  ranges=threadRanges(length(key))
+  if length(ranges)==2
+    unshufflePairsWorker!(buf,round,key,1,length(key))
+  else
+    tasks=Task[]
+    for i in 1:length(ranges)-1
+      push!(tasks,@spawn unshufflePairsWorker!(buf,round,key,ranges[i],ranges[i-1]-1))
+    end
+    for i in 1:length(ranges)-1
+      wait(tasks[i])
+    end
+  end
+  return nothing
 end
 
 end
