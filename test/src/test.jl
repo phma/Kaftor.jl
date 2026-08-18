@@ -112,4 +112,18 @@ function testVectors()
 		   ])
 end
 
+function convolve(a::Integer,b::Integer)
+  # a and b are 24-bit numbers
+  ret=zero(a)
+  a&=0xffffff
+  b&=0xffffff
+  for i in 0:23
+    if isodd(count_ones(a&b))
+      ret+=one(a)<<i
+    end
+    b=(b<<1&0xffffff)+((b&0x800000)>>23)
+  end
+  ret
+end
+
 end
