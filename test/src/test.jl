@@ -1,7 +1,8 @@
 module test
-using Kaftor,Test
+using Kaftor,Test,Printf
 using Kaftor.Jumble,Kaftor.Mix3
 export testRot4p,testJumble,testMix3,testMaxOrder,testVectors
+export listSingleIpsi
 
 key96_0 = "Водворетраванатраведрова.Нерубидрованатраведвора!"
 key96_1 = "Водворетраванатраведрова.Нерубидрованатраведвора "
@@ -124,6 +125,19 @@ function convolve(a::Integer,b::Integer)
     b=(b<<1&0xffffff)+((b&0x800000)>>23)
   end
   ret
+end
+
+function singleIpsi(a::Integer)
+  convolve(a,a)==1
+end
+
+function listSingleIpsi()
+  for i in 0x0:0xffffff
+    if singleIpsi(i)
+      @printf "%06x  " i
+    end
+  end
+  println()
 end
 
 end
