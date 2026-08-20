@@ -1,5 +1,5 @@
 module test
-using Kaftor,Test,Printf
+using Kaftor,Test,Printf,OffsetArrays
 using Kaftor.Jumble,Kaftor.Mix3
 export testRot4p,testJumble,testMix3,testMaxOrder,testVectors
 export listSingleIpsi
@@ -138,6 +138,22 @@ function listSingleIpsi()
     end
   end
   println()
+end
+
+const mix3Table=OffsetVector(fill(0x000000,256),-1)
+
+function fillMix3Table(pattern::Integer)
+  pattern=(pattern&0xffffff)*0x001000001
+  for i in 0:255
+    mix3Table[i]=0
+  end
+  for i in 0:7
+    for j in 1:255
+      if j&(1<<i)>0
+        mix3Table[j]⊻=(pattern>>i)&0xffffff
+      end
+    end
+  end
 end
 
 end
