@@ -156,4 +156,19 @@ function fillMix3Table(pattern::Integer)
   end
 end
 
+function variety(vec::OffsetVector{<:Integer},n::Integer)
+  tally=OffsetVector(fill(0x0000,256),-1)
+  total=0
+  for i in 0:n-1
+    for j in 0:255
+      tally[j]=0
+    end
+    for j in vec
+      tally[j>>(8*i)&255]=1
+    end
+    total+=sum(tally)
+  end
+  total
+end
+
 end
