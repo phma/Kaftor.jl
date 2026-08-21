@@ -131,15 +131,6 @@ function singleIpsi(a::Integer)
   convolve(a,a)==1
 end
 
-function listSingleIpsi()
-  for i in 0x0:0xffffff
-    if count_ones(i)<=13 && count_ones(i)>=11 && singleIpsi(i)
-      @printf "%06x  " i
-    end
-  end
-  println()
-end
-
 const mix3Table=OffsetVector(fill(0x000000,256),-1)
 
 function fillMix3Table(pattern::Integer)
@@ -169,6 +160,21 @@ function variety(vec::OffsetVector{<:Integer},n::Integer)
     total+=sum(tally)
   end
   total
+end
+
+function listSingleIpsi()
+  mostVar=0
+  for i in 0x0:0xffffff
+    if count_ones(i)<=13 && count_ones(i)>=11 && singleIpsi(i)
+      fillMix3Table(i)
+      var=variety(mix3Table,3)
+      if var>=mostVar
+        mostVar=var
+        @printf "%06x%4d\n" i var
+      end
+    end
+  end
+  println()
 end
 
 end
